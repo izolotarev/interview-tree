@@ -6,6 +6,7 @@ import { RootState } from '../store/reducers/root-reducer';
 export type TreeState = {
   tree: TreeType | undefined;
   treeLoaded: boolean;
+  selectedId?: number;
 }
 
 export type State = RootState;

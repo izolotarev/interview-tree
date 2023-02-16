@@ -10,3 +10,12 @@ export const loadTreeAction = createAction(
     }
   })
 )
+
+export const selectNodeAction = createAction(
+  ActionType.SelectNode,
+  (id: number) => ({
+    payload: {
+      id
+    }
+  })
+)
