@@ -6,7 +6,6 @@ import { selectNodeAction } from '../../store/actions/actions';
 import { getSelectedId } from '../../store/reducers/tree/tree-selectors';
 import { TreeType } from '../../types/types';
 
-
 type TreeProps = {
   node?: TreeType
 }
@@ -29,7 +28,26 @@ function Tree({ node }: TreeProps):JSX.Element {
 
   return (
     <li>
-      <span className={`caret ${active ? 'caret-down' : ''} ${selectedId === id ? 'selected' : ''}`} onClick={handleClick}>{ name }</span>
+      <div className={`${selectedId === id ? 'selected' : ''}`}>
+        <span className={`caret ${active ? 'caret-down' : ''}`} onClick={handleClick}>{ name }</span>
+        {
+          selectedId === id
+            ?
+            <>
+              <button className='btn-purple' onClick={() => alert('123')}>
+                <i className="bi bi-plus-circle"></i>
+              </button>
+              <button className='btn-purple' onClick={() => alert('123')}>
+                <i className="bi bi-pencil-square"></i>
+              </button>
+              <button className='btn-red' onClick={() => alert('123')}>
+                <i className="bi bi-trash3"></i>
+              </button>
+            </>
+            :
+            null
+        }
+      </div>
       {
         children.length > 0 
           ?
@@ -39,10 +57,11 @@ function Tree({ node }: TreeProps):JSX.Element {
             }
           </ul>
           :
-          ''
+          null
       } 
     </li>
   );
 }
 
 export default Tree;
+
