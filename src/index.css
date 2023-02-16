@@ -1,0 +1,38 @@
+.ticker {
+  padding : 20px; 
+  border: 2px solid #ececec;
+  border-radius: 8px;
+}
+
+.ticker__wrapper {
+  width: 50%;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .ticker__wrapper {
+    width: 100%;
+  }  
+}
+
+.border-right {
+  border-right: 2px solid #ececec
+}
+
+.btn-large {
+  width: 100%;
+}
+
+.font-green {
+  color: green !important;
+}
+
+.font-red {
+  color: red !important;
+}
+
+.btn-red {
+  border-width: 0;
+  background: transparent;
+  color: red;
+}
