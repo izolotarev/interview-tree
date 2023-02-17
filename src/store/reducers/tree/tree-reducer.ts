@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { TreeState } from '../../../types/types';
-import { clearRenameTreeAction, loadTreeAction, renameTreeAction, selectNodeAction } from '../../actions/actions';
+import { addTreeAction, clearAddTreeAction, clearRenameTreeAction, loadTreeAction, renameTreeAction, selectNodeAction } from '../../actions/actions';
 
 export const initialState: TreeState = {
   tree: undefined,
@@ -19,6 +19,12 @@ export const treeData = createReducer(initialState, (builder) => {
     })
     .addCase(selectNodeAction, (state, action) => {
       state.selectedId = action.payload.id;
+    })
+    .addCase(addTreeAction, (state, action) => {
+      state.addSuccess = true;
+    })
+    .addCase(clearAddTreeAction, (state, action) => {
+      state.addSuccess = initialState.addSuccess;
     })
     .addCase(renameTreeAction, (state, action) => {
       state.renameSuccess = true;

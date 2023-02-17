@@ -11,6 +11,8 @@ export const loadTreeAction = createAction(
   })
 );
 
+export const addTreeAction = createAction(ActionType.AddTree);
+export const clearAddTreeAction = createAction(ActionType.ClearAddTree);
 export const renameTreeAction = createAction(ActionType.RenameTree);
 export const clearRenameTreeAction = createAction(ActionType.ClearRenameTree);
 

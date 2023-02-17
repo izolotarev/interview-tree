@@ -2,9 +2,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearRenameTreeAction, selectNodeAction } from '../../store/actions/actions';
+import { clearAddTreeAction, clearRenameTreeAction, selectNodeAction } from '../../store/actions/actions';
 import { fetchTree } from '../../store/actions/api-actions';
-import { getRenameSuccess, getRootId, getRootName, getSelectedId } from '../../store/reducers/tree/tree-selectors';
+import { getAddSuccess, getRenameSuccess, getRootId, getRootName, getSelectedId } from '../../store/reducers/tree/tree-selectors';
 import { TreeType } from '../../types/types';
 import AddModal from '../tree-add-modal/tree-add-modal';
 import DeleteModal from '../tree-delete-modal/tree-delete-modal';
@@ -19,10 +19,20 @@ function Tree({ node }: TreeProps):JSX.Element {
   const [active, setActive] = useState(false);
   const selectedId = useSelector(getSelectedId);
   const rootId = useSelector(getRootId);
+  const addSuccess = useSelector(getAddSuccess);
   const renameSuccess = useSelector(getRenameSuccess);
   const rootName = useSelector(getRootName);
 
   const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    if (addSuccess ) {
+      if (!rootName) { return; }
+      dispatch(fetchTree(rootName));
+      dispatch(clearAddTreeAction());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addSuccess])
 
   useEffect(() => {
     if (renameSuccess ) {
@@ -30,7 +40,9 @@ function Tree({ node }: TreeProps):JSX.Element {
       dispatch(fetchTree(rootName));
       dispatch(clearRenameTreeAction());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renameSuccess])
+
 
   const [addModalShow, setAddModalShow] = useState(false);
   const [renameModalShow, setRenameModalShow] = useState(false);

@@ -12,6 +12,7 @@ import { createAPI } from './services/api';
 import { redirect } from './store/middlewares/redirect';
 import { rootReducer } from './store/reducers/root-reducer';
 import { fetchTree } from './store/actions/api-actions';
+import { TREE_NAME } from './const/const';
 
 const api = createAPI();
 
@@ -27,7 +28,7 @@ export const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch
 
-store.dispatch(fetchTree('MyTree'));
+store.dispatch(fetchTree(TREE_NAME));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

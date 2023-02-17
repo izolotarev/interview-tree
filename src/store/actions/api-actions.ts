@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { APIRoute } from '../../const/const';
 import { ThunkActionResult, TreeType } from '../../types/types';
-import { loadTreeAction, renameTreeAction } from './actions';
+import { addTreeAction, loadTreeAction, renameTreeAction } from './actions';
 
 export const fetchTree = (treeName: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -14,11 +14,20 @@ export const fetchTree = (treeName: string): ThunkActionResult =>
     }
   };
 
+export const addTree = (treeName: string, parentNodeId: number, nodeName: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      await api.post(`${APIRoute.TREE_CREATE}?treeName=${treeName}&parentNodeId=${parentNodeId}&nodeName=${nodeName}`);
+      dispatch(addTreeAction());
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
 export const renameTree = (treeName: string, nodeId: number, newNodeName: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      await api.post<TreeType>(`${APIRoute.TREE_RENAME}?treeName=${treeName}&nodeId=${nodeId}&newNodeName=${newNodeName}`);
+      await api.post(`${APIRoute.TREE_RENAME}?treeName=${treeName}&nodeId=${nodeId}&newNodeName=${newNodeName}`);
       dispatch(renameTreeAction());
     } catch (error) {
       handleError(error);
