@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { TreeState } from '../../../types/types';
-import { addTreeAction, clearAddTreeAction, clearRenameTreeAction, loadTreeAction, renameTreeAction, selectNodeAction } from '../../actions/actions';
+import { addTreeAction, clearAddTreeAction, clearDeleteTreeAction, clearRenameTreeAction, deleteTreeAction, loadTreeAction, renameTreeAction, selectNodeAction } from '../../actions/actions';
 
 export const initialState: TreeState = {
   tree: undefined,
@@ -32,4 +32,10 @@ export const treeData = createReducer(initialState, (builder) => {
     .addCase(clearRenameTreeAction, (state, action) => {
       state.renameSuccess = initialState.renameSuccess;
     })
+    .addCase(deleteTreeAction, (state, action) => {
+      state.deleteSuccess = true;
+    })
+    .addCase(clearDeleteTreeAction, (state, action) => {
+      state.deleteSuccess = initialState.deleteSuccess;
+    });
 });

@@ -8,3 +8,4 @@ export const getRootId = (state: State): number | undefined => state[NameSpace.t
 export const getRootName = (state: State): string | undefined => state[NameSpace.tree].tree?.name;
 export const getAddSuccess = (state: State): boolean => state[NameSpace.tree].addSuccess;
 export const getRenameSuccess = (state: State): boolean => state[NameSpace.tree].renameSuccess;
+export const getDeleteSuccess = (state: State): boolean => state[NameSpace.tree].deleteSuccess;
