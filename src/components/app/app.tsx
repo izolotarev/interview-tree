@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { AppRoute } from '../../const/const';
 import Main from '../main/main';
 import { Route, Routes } from 'react-router-dom';

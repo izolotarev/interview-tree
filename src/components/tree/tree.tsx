@@ -1,10 +1,14 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import { selectNodeAction } from '../../store/actions/actions';
-import { getSelectedId } from '../../store/reducers/tree/tree-selectors';
+import { clearRenameTreeAction, selectNodeAction } from '../../store/actions/actions';
+import { fetchTree } from '../../store/actions/api-actions';
+import { getRenameSuccess, getRootId, getRootName, getSelectedId } from '../../store/reducers/tree/tree-selectors';
 import { TreeType } from '../../types/types';
+import AddModal from '../tree-add-modal/tree-add-modal';
+import DeleteModal from '../tree-delete-modal/tree-delete-modal';
+import RenameModal from '../tree-rename-modal/tree-rename-modal';
 
 type TreeProps = {
   node?: TreeType
@@ -14,8 +18,23 @@ function Tree({ node }: TreeProps):JSX.Element {
 
   const [active, setActive] = useState(false);
   const selectedId = useSelector(getSelectedId);
+  const rootId = useSelector(getRootId);
+  const renameSuccess = useSelector(getRenameSuccess);
+  const rootName = useSelector(getRootName);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (renameSuccess ) {
+      if (!rootName) { return; }
+      dispatch(fetchTree(rootName));
+      dispatch(clearRenameTreeAction());
+    }
+  }, [renameSuccess])
+
+  const [addModalShow, setAddModalShow] = useState(false);
+  const [renameModalShow, setRenameModalShow] = useState(false);
+  const [deleteModalShow, setDeleteModalShow] = useState(false);
 
   if (!node) { return <></>;}
 
@@ -26,40 +45,67 @@ function Tree({ node }: TreeProps):JSX.Element {
     dispatch(selectNodeAction(id));
   }
 
+  const handleAddClick = () => {
+    setAddModalShow(true);
+  }
+
+  const handleRenameClick = () => {
+    setRenameModalShow(true);
+  }
+
+  const handleDeleteClick = () => {
+    setDeleteModalShow(true);
+  }
+
   return (
-    <li>
-      <div className={`${selectedId === id ? 'selected' : ''}`}>
-        <span className={`caret ${active ? 'caret-down' : ''}`} onClick={handleClick}>{ name }</span>
+    <>
+      <li>
+        <div className={`${selectedId === id ? 'selected' : ''}`}>
+          <span className={`caret ${active ? 'caret-down' : ''}`} onClick={handleClick}>{ name }</span>
+          {
+            selectedId === id
+              ?
+              <>
+                <button className='btn-purple' onClick={handleAddClick}>
+                  <i className="bi bi-plus-circle"></i>
+                </button>
+              </>
+              :
+              null
+          }
+          {
+            selectedId === id && rootId !== id
+              ?
+              <>
+                <button className='btn-purple' onClick={handleRenameClick}>
+                  <i className="bi bi-pencil-square"></i>
+                </button>
+                <button className='btn-red' onClick={handleDeleteClick}>
+                  <i className="bi bi-trash3"></i>
+                </button>
+              </>
+              :
+              null
+          }
+        </div>
         {
-          selectedId === id
+          children.length > 0 
             ?
-            <>
-              <button className='btn-purple' onClick={() => alert('123')}>
-                <i className="bi bi-plus-circle"></i>
-              </button>
-              <button className='btn-purple' onClick={() => alert('123')}>
-                <i className="bi bi-pencil-square"></i>
-              </button>
-              <button className='btn-red' onClick={() => alert('123')}>
-                <i className="bi bi-trash3"></i>
-              </button>
-            </>
+            <ul className={`nested ${active ? 'active' : ''}`}>
+              {
+                children.map((child) => <Tree key={child.id} node={child} />)
+              }
+            </ul>
             :
             null
-        }
-      </div>
-      {
-        children.length > 0 
-          ?
-          <ul className={`nested ${active ? 'active' : ''}`}>
-            {
-              children.map((child) => <Tree key={child.id} node={child} />)
-            }
-          </ul>
-          :
-          null
-      } 
-    </li>
+        } 
+      </li>
+      <AddModal show={addModalShow} onHide={() => setAddModalShow(false)} node={node}/>
+      <RenameModal show={renameModalShow} onHide={() => setRenameModalShow(false)} node={node}/>
+      <DeleteModal show={deleteModalShow} onHide={() => setDeleteModalShow(false)} node={node}/>
+    </>
+
+    
   );
 }
 

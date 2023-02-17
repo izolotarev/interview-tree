@@ -9,7 +9,10 @@ export const loadTreeAction = createAction(
       tree
     }
   })
-)
+);
+
+export const renameTreeAction = createAction(ActionType.RenameTree);
+export const clearRenameTreeAction = createAction(ActionType.ClearRenameTree);
 
 export const selectNodeAction = createAction(
   ActionType.SelectNode,
@@ -18,4 +21,4 @@ export const selectNodeAction = createAction(
       id
     }
   })
-)
+);

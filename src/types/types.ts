@@ -7,6 +7,9 @@ export type TreeState = {
   tree: TreeType | undefined;
   treeLoaded: boolean;
   selectedId?: number;
+  addSuccess: boolean;
+  renameSuccess: boolean;
+  deleteSuccess: boolean;
 }
 
 export type State = RootState;
