@@ -21,3 +21,9 @@ export type TreeType = {
   name: string,
   children: TreeType[],
 }
+
+export enum TreeOperation {
+  Add,
+  Rename,
+  Delete,
+}

@@ -5,8 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { SyntheticEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { renameTree } from '../../store/actions/api-actions';
-import { useSelector } from 'react-redux';
-import { getRootName } from '../../store/reducers/tree/tree-selectors';
+import { TREE_NAME } from '../../const/const';
 
 type RenameModalProps = {
   show: boolean
@@ -26,11 +25,8 @@ function RenameModal({ show, onHide: handleClose, node }: RenameModalProps) {
 
   const dispatch = useAppDispatch();
 
-  const rootName = useSelector(getRootName);
-
   const handleConfirm = () => {
-    if (!rootName) { return; }
-    dispatch(renameTree(rootName, node.id, newName));
+    dispatch(renameTree(TREE_NAME, node.id, newName));
     handleClose();
   }
 

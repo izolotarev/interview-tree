@@ -2,9 +2,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { TreeType } from '../../types/types';
 import { useAppDispatch } from '../../hooks/hooks';
-import { useSelector } from 'react-redux';
-import { getRootName } from '../../store/reducers/tree/tree-selectors';
 import { deleteTree } from '../../store/actions/api-actions';
+import { TREE_NAME } from '../../const/const';
 
 type DeleteModalProps = {
   show: boolean
@@ -15,11 +14,9 @@ type DeleteModalProps = {
 function DeleteModal({ show, onHide: handleClose, node }: DeleteModalProps) {
 
   const dispatch = useAppDispatch();
-  const rootName = useSelector(getRootName);
 
   const handleConfirm = () => {
-    if (!rootName) { return; }
-    dispatch(deleteTree(rootName, node.id));
+    dispatch(deleteTree(TREE_NAME, node.id));
     handleClose();
   }
 

@@ -1,11 +1,11 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearAddTreeAction, clearDeleteTreeAction, clearRenameTreeAction, selectNodeAction } from '../../store/actions/actions';
-import { fetchTree } from '../../store/actions/api-actions';
-import { getAddSuccess, getDeleteSuccess, getRenameSuccess, getRootId, getRootName, getSelectedId } from '../../store/reducers/tree/tree-selectors';
-import { TreeType } from '../../types/types';
+import { useUpdateTreeOn } from '../../hooks/useUpdateTreeOn';
+import {  selectNodeAction } from '../../store/actions/actions';
+import { getAddSuccess, getDeleteSuccess, getRenameSuccess, getRootId, getSelectedId } from '../../store/reducers/tree/tree-selectors';
+import { TreeOperation, TreeType } from '../../types/types';
 import AddModal from '../tree-add-modal/tree-add-modal';
 import DeleteModal from '../tree-delete-modal/tree-delete-modal';
 import RenameModal from '../tree-rename-modal/tree-rename-modal';
@@ -22,37 +22,12 @@ function Tree({ node }: TreeProps):JSX.Element {
   const addSuccess = useSelector(getAddSuccess);
   const renameSuccess = useSelector(getRenameSuccess);
   const deleteSuccess = useSelector(getDeleteSuccess);
-  const rootName = useSelector(getRootName);
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (addSuccess ) {
-      if (!rootName) { return; }
-      dispatch(fetchTree(rootName));
-      dispatch(clearAddTreeAction());
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addSuccess])
-
-  useEffect(() => {
-    if (renameSuccess ) {
-      if (!rootName) { return; }
-      dispatch(fetchTree(rootName));
-      dispatch(clearRenameTreeAction());
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [renameSuccess])
-
-  useEffect(() => {
-    if (deleteSuccess ) {
-      if (!rootName) { return; }
-      dispatch(fetchTree(rootName));
-      dispatch(clearDeleteTreeAction());
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteSuccess])
-
+  useUpdateTreeOn(addSuccess, TreeOperation.Add);
+  useUpdateTreeOn(renameSuccess, TreeOperation.Rename);
+  useUpdateTreeOn(deleteSuccess, TreeOperation.Delete);
 
   const [addModalShow, setAddModalShow] = useState(false);
   const [renameModalShow, setRenameModalShow] = useState(false);
@@ -126,8 +101,6 @@ function Tree({ node }: TreeProps):JSX.Element {
       <RenameModal show={renameModalShow} onHide={() => setRenameModalShow(false)} node={node}/>
       <DeleteModal show={deleteModalShow} onHide={() => setDeleteModalShow(false)} node={node}/>
     </>
-
-    
   );
 }
 

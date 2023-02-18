@@ -17,7 +17,7 @@ function Main() {
 
   return (
     <Container>
-      <ul id="myUL">
+      <ul>
         <Tree node={root} />
       </ul>
     </Container>

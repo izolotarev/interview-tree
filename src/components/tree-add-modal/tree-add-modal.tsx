@@ -4,9 +4,8 @@ import { TreeType } from '../../types/types';
 import Form from 'react-bootstrap/Form';
 import { SyntheticEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
-import { useSelector } from 'react-redux';
-import { getRootName } from '../../store/reducers/tree/tree-selectors';
 import { addTree } from '../../store/actions/api-actions';
+import { TREE_NAME } from '../../const/const';
 
 type AddModalProps = {
   show: boolean
@@ -26,11 +25,8 @@ function AddModal({ show, onHide: handleClose, node }: AddModalProps) {
 
   const dispatch = useAppDispatch();
 
-  const rootName = useSelector(getRootName);
-
   const handleConfirm = () => {
-    if (!rootName) { return; }
-    dispatch(addTree(rootName, node.id, nodeName));
+    dispatch(addTree(TREE_NAME, node.id, nodeName));
     handleClose();
   }
 
